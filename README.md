@@ -4,8 +4,8 @@ keep track of your fitness and complete the challenge  "100 days of sweat'
 <table>
   <tr>
     <td>First Screen Page</td>
-     <td>Holiday Mention</td>
-     <td>Present day in purple and selected day in pink</td>
+     <td>Ticking Checkbox</td>
+     <td>Challenge Completed</td>
   </tr>
   <tr>
     <td><img src="C:\Users\mayan\Downloads/ss1.jpeg" width=270 height=480></td>
