@@ -82,10 +82,15 @@ class _MainPageState extends State<MainPage> {
     @required VoidCallback onClicked,
   }) =>
       ListTile(
-        onTap: onClicked,
+       onTap: onClicked,
         leading: Checkbox(
-          value: notification.value,
-          onChanged: (value) => onClicked(),
+
+            value: notification.value,
+            onChanged: (value) async {
+              final prefs = await SharedPreferences.getInstance();
+              prefs.setBool('checkBox', value);
+              onClicked();
+            }
         ),
         title: Text(
           notification.title,
