@@ -28,9 +28,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final daysCompleted = DaysSetting(title: 'Challange Completed');
+  final daysCompleted = DaysSetting(title: 'Challenge Completed');
   final notifications = List<DaysSetting>.generate(100, (i) => DaysSetting(title: 'Day${i + 1}'));
-
+  
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
     @required VoidCallback onClicked,
   }) =>
       ListTile(
-       onTap: onClicked,
+        onTap: onClicked,
         leading: Checkbox(
 
             value: notification.value,
@@ -100,28 +100,19 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _loadCounter();
-    _incrementCounter();
     _savedCounter();
   }
-  int _counter = 0;
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter = (prefs.getInt('counter') ?? 0);
+      daysCompleted.value = (prefs.getBool("checkBox")) ?? false;
     });
   }
-  _incrementCounter() async {
+
+  _savedCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter = (prefs.getInt('counter') ?? 0) + 1;
-      prefs.setInt('counter', _counter);
-    });
-  }
-  _savedCounter() async{
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _counter = (prefs.getInt('counter') ?? 0) + 1;
-      prefs.setInt('counter', _counter);
+      prefs.setBool('checkBox', daysCompleted.value);
     });
   }
 }
