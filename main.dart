@@ -1,6 +1,7 @@
 import 'package:orignal/model/Days_Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -29,8 +30,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final daysCompleted = DaysSetting(title: 'Challenge Completed');
-  final notifications = List<DaysSetting>.generate(100, (i) => DaysSetting(title: 'Day${i + 1}'));
-  
+  final  notifications = <DaysSetting>[];
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -89,6 +90,7 @@ class _MainPageState extends State<MainPage> {
             onChanged: (value) async {
               final prefs = await SharedPreferences.getInstance();
               prefs.setBool('checkBox', value);
+              prefs.setBool('list', value);
               onClicked();
             }
         ),
@@ -101,18 +103,21 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _loadCounter();
     _savedCounter();
+    notifications.addAll(List<DaysSetting>.generate(100, (i) => DaysSetting(title: 'Day${i + 1}')));
   }
+
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
       daysCompleted.value = (prefs.getBool("checkBox")) ?? false;
-    });
+      final _notifications  = jsonDecode(prefs.getString("list"));
+      for(final i in _notifications){
+        notifications.add(i);
+    }
   }
 
   _savedCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
       prefs.setBool('checkBox', daysCompleted.value);
-    });
+      prefs.setString('list', json.encode(notifications));
   }
 }
